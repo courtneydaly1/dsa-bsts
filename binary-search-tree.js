@@ -1,3 +1,6 @@
+// // jest was installed globally using the code in terminal,
+//  npm install --save-dev jest
+
 class Node {
   constructor(val, left = null, right = null) {
     this.val = val;
@@ -93,7 +96,17 @@ class BinarySearchTree {
   /** findRecursively(val): search the tree for a node with value val.
    * return the node, if found; else undefined. Uses recursion. */
 
-  findRecursively(val) {
+  findRecursively(val, current=this.root) {
+    if(this.root === null) return undefined;
+
+    if (val < current.val) {
+      if(current.left === null) return undefined;
+      return this.findRecursively(val, current.left);
+    } else if (val > current.val) {
+      if (current.right === null) return undefined;
+      return this.findRecursively(val, current.right);
+    }
+    return current;
 
   }
 
@@ -101,6 +114,18 @@ class BinarySearchTree {
    * Return an array of visited nodes. */
 
   dfsPreOrder() {
+    let data = [];
+    let current = this.root;
+
+    function traverse(node){
+      data.push(node.val);
+      // Go left
+      node.left && traverse(node.left)
+      // Go right
+      node.right && traverse(node.right)
+    }
+    traverse(current);
+    return data;
 
   }
 
@@ -108,6 +133,19 @@ class BinarySearchTree {
    * Return an array of visited nodes. */
 
   dfsInOrder() {
+    let data = [];
+    let current = this.root;
+
+    function traverse(node){
+      // go left
+      node.left && traverse(node.left)
+      // visit
+      data.push(node.val)
+      // Go right
+      node.right && traverse(node.right);
+    }
+    traverse(current);
+    return data;
 
   }
 
@@ -115,6 +153,16 @@ class BinarySearchTree {
    * Return an array of visited nodes. */
 
   dfsPostOrder() {
+    let data = [];
+    let current = this.root;
+
+    function traverse(node){
+      node.left && traverse(node.left);
+      node.right && traverse(node.right);
+      data.push(node.val);
+    }
+    traverse(current);
+    return data;
 
   }
 
@@ -122,7 +170,23 @@ class BinarySearchTree {
    * Return an array of visited nodes. */
 
   bfs() {
+    let node = this.root;
+    let queue = [];
+    let data = [];
 
+    queue.push(node);
+
+    while (queue.length){
+      node.queue.shift();
+      data.push(node.val);
+      if(node.left){
+        queue.push(node.left)
+      }
+      if (node.right){
+        queue.push(node.right);
+      }
+    }
+    return data;
   }
 
   /** Further Study!
